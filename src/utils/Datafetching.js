@@ -1,36 +1,22 @@
+import axios from "axios";
 
-
-export default function Datafetching({pageparams}){
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    // const body = JSON.stringify({
-    //   "limit": 10,
-    //   "offset":pageparams
-    //  });
-     let limit=10;
-     let offset=pageparams;
-     
-    //  const requestOptions = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   body
-    //  };
-     fetch("https://api.weekday.technology/adhoc/getSampleJdJSON",{
-        method: "POST",
-        headers: myHeaders,
-        body:JSON.stringify({
-            limit,
-            offset,
-        })
-     } )
-     .then((response) => response.json())
-     .then((result) =>{
-        return{
-            result:result,
-            offset:offset+limit
+const Datafetching = async (page) => {
+    try {
+        const response = await axios.post('https://api.weekday.technology/adhoc/getSampleJdJSON', {
+            limit: 10,
+            offset: page
+        }, {
+            headers: {
+                "Content-Type": "application/json"
+            }});
+        if (response && response.data) {
+            var data= response.data.jdList;
+            console.log(data);
+           return data;
         }
-     })
-     .catch((error) => {
+    } catch (error) {
         return error;
-    });
+    }
 }
+
+export default Datafetching;
